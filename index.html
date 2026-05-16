@@ -1,0 +1,2033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Deepak Khimavath — AI Platform Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ── DESIGN SYSTEM ────────────────────────────────────────────────── */
+:root {
+  --bg:       #05080F;
+  --bg2:      #080D17;
+  --bg3:      #0B1120;
+  --card:     #0D1526;
+  --border:   rgba(99,179,237,0.1);
+  --border2:  rgba(99,179,237,0.06);
+  --ink:      #E8F0FE;
+  --muted:    #7A90B0;
+  --dim:      #3A4A60;
+  --cyan:     #00E5FF;
+  --blue:     #3B82F6;
+  --violet:   #818CF8;
+  --gold:     #F59E0B;
+  --green:    #10B981;
+  --glow-c:   rgba(0,229,255,0.12);
+  --glow-b:   rgba(59,130,246,0.1);
+  --font-d:   'Clash Display', sans-serif;
+  --font-b:   'Instrument Sans', sans-serif;
+  --font-m:   'JetBrains Mono', monospace;
+}
+ 
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font-b);font-weight:300;
+  line-height:1.7;overflow-x:hidden;
+}
+ 
+/* ── CURSOR ── */
+.cursor,.cursor-ring{position:fixed;pointer-events:none;z-index:30000;border-radius:50%;top:0;left:0;}
+.cursor{width:6px;height:6px;background:var(--cyan);mix-blend-mode:screen;}
+.cursor-ring{width:34px;height:34px;border:1px solid rgba(0,229,255,0.35);transition:width .2s,height .2s,border-color .2s,background .2s;}
+.cursor-ring.hov{width:54px;height:54px;border-color:var(--cyan);background:rgba(0,229,255,0.04);}
+body{cursor:none;}
+ 
+/* ── NOISE ── */
+body::after{
+  content:'';position:fixed;inset:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:9990;
+}
+ 
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:2px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px;}
+ 
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:22px 64px;display:flex;align-items:center;justify-content:space-between;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  background:rgba(5,8,15,0.75);
+  border-bottom:1px solid var(--border2);
+  transition:padding .35s;
+}
+nav.scrolled{padding:14px 64px;}
+.nav-logo{
+  font-family:var(--font-m);font-weight:500;font-size:.95rem;
+  color:var(--ink);text-decoration:none;letter-spacing:.08em;
+  display:flex;align-items:center;gap:8px;
+}
+.nav-logo .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.nav-links{display:flex;gap:36px;list-style:none;align-items:center;}
+.nav-links a{
+  font-family:var(--font-m);font-size:.72rem;font-weight:400;
+  color:var(--muted);text-decoration:none;letter-spacing:.1em;
+  text-transform:uppercase;transition:color .3s;
+}
+.nav-links a:hover{color:var(--cyan);}
+.nav-cta{
+  padding:8px 20px;border:1px solid var(--cyan);
+  color:var(--cyan)!important;border-radius:2px;
+  transition:background .3s,color .3s!important;
+}
+.nav-cta:hover{background:var(--cyan)!important;color:var(--bg)!important;}
+.nav-toggle{
+  display:none;width:38px;height:38px;border:1px solid var(--border);
+  border-radius:6px;background:rgba(13,21,38,.8);color:var(--ink);
+  align-items:center;justify-content:center;cursor:pointer;
+}
+.nav-toggle span,.nav-toggle span::before,.nav-toggle span::after{
+  content:'';display:block;width:17px;height:1px;background:currentColor;
+  transition:transform .25s,opacity .25s;
+}
+.nav-toggle span{position:relative;}
+.nav-toggle span::before{position:absolute;top:-6px;}
+.nav-toggle span::after{position:absolute;top:6px;}
+nav.menu-open .nav-toggle span{background:transparent;}
+nav.menu-open .nav-toggle span::before{transform:translateY(6px) rotate(45deg);}
+nav.menu-open .nav-toggle span::after{transform:translateY(-6px) rotate(-45deg);}
+ 
+/* ── HERO ── */
+#hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:140px 64px 100px;position:relative;overflow:hidden;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(0,229,255,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,229,255,.03) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black,transparent);
+}
+.hero-orb{
+  position:absolute;border-radius:50%;pointer-events:none;
+}
+.orb1{width:700px;height:700px;background:radial-gradient(circle,rgba(59,130,246,.1) 0%,transparent 70%);top:-150px;right:-150px;animation:flt1 9s ease-in-out infinite;}
+.orb2{width:450px;height:450px;background:radial-gradient(circle,rgba(0,229,255,.07) 0%,transparent 70%);bottom:0;left:80px;animation:flt2 11s ease-in-out infinite;}
+.orb3{width:300px;height:300px;background:radial-gradient(circle,rgba(129,140,248,.08) 0%,transparent 70%);top:40%;left:40%;animation:flt3 7s ease-in-out infinite;}
+@keyframes flt1{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,25px)}}
+@keyframes flt2{0%,100%{transform:translate(0,0)}50%{transform:translate(15px,-18px)}}
+@keyframes flt3{0%,100%{transform:translate(0,0)}50%{transform:translate(-10px,12px)}}
+ 
+.hero-inner{
+  position:relative;z-index:2;max-width:1280px;margin:0 auto;
+  width:100%;display:grid;grid-template-columns:1fr 400px;gap:80px;align-items:center;
+}
+ 
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.2);
+  border-radius:100px;padding:6px 18px;margin-bottom:32px;
+  font-family:var(--font-m);font-size:.7rem;color:var(--cyan);letter-spacing:.12em;
+  opacity:0;transform:translateY(16px);animation:up .6s .1s forwards;
+}
+.hero-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse-g 2s infinite;}
+@keyframes pulse-g{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.4)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+ 
+.hero-name{
+  font-family:var(--font-d);font-weight:700;
+  font-size:clamp(3rem,5.5vw,5.2rem);
+  line-height:1.0;letter-spacing:-.03em;color:var(--ink);
+  opacity:0;transform:translateY(28px);animation:up .8s .25s forwards;
+}
+.hero-name .line2{
+  background:linear-gradient(135deg,var(--cyan),var(--blue),var(--violet));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:block;
+}
+ 
+.hero-sub{
+  font-size:1.05rem;color:var(--muted);margin:24px 0 40px;
+  max-width:500px;line-height:1.85;
+  opacity:0;transform:translateY(20px);animation:up .8s .4s forwards;
+}
+.hero-sub strong{color:var(--ink);font-weight:500;}
+ 
+.hero-btns{
+  display:flex;gap:14px;flex-wrap:wrap;
+  opacity:0;transform:translateY(16px);animation:up .8s .55s forwards;
+}
+.btn-p{
+  padding:13px 30px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;font-family:var(--font-b);font-size:.88rem;font-weight:500;
+  border:none;border-radius:3px;cursor:pointer;text-decoration:none;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 8px 28px rgba(59,130,246,.3);letter-spacing:.04em;
+}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(59,130,246,.4);}
+.btn-s{
+  padding:13px 30px;background:transparent;color:var(--ink);
+  border:1px solid var(--border);border-radius:3px;
+  font-family:var(--font-b);font-size:.88rem;font-weight:400;
+  text-decoration:none;cursor:pointer;transition:border-color .3s,color .3s;letter-spacing:.04em;
+}
+.btn-s:hover{border-color:var(--cyan);color:var(--cyan);}
+.btn-r{
+  padding:13px 20px;background:rgba(16,185,129,.08);color:var(--green);
+  border:1px solid rgba(16,185,129,.24);border-radius:3px;
+  font-family:var(--font-b);font-size:.88rem;font-weight:500;
+  text-decoration:none;cursor:pointer;transition:border-color .3s,color .3s,background .3s;
+  letter-spacing:.04em;
+}
+.btn-r:hover{border-color:var(--green);background:rgba(16,185,129,.12);}
+ 
+.hero-metrics{
+  display:flex;gap:44px;margin-top:60px;
+  opacity:0;transform:translateY(16px);animation:up .8s .7s forwards;
+}
+.metric-val{
+  font-family:var(--font-d);font-weight:700;font-size:2.2rem;line-height:1;
+  background:linear-gradient(135deg,var(--cyan),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.metric-lbl{font-size:.72rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:5px;}
+ 
+/* hero right — profile card */
+.hero-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:32px;position:relative;overflow:hidden;
+  opacity:0;transform:scale(.94) translateY(20px);animation:up .9s .5s forwards;
+}
+.hero-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,229,255,.04),rgba(59,130,246,.04),transparent);
+  pointer-events:none;
+}
+.hc-avatar{
+  width:130px;height:130px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  padding:2px;margin-bottom:20px;
+}
+.hc-avatar img{width:100%;height:100%;border-radius:50%;object-fit:contain;display:block;background:var(--bg3);}
+.hc-avatar-fallback{
+  width:100%;height:100%;border-radius:50%;
+  background:var(--bg3);display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:2rem;font-weight:700;color:var(--cyan);
+}
+.hc-name{font-family:var(--font-d);font-weight:600;font-size:1.2rem;color:var(--ink);}
+.hc-title{font-size:.78rem;color:var(--cyan);margin-top:4px;font-family:var(--font-m);}
+.hc-loc{font-size:.75rem;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:6px;}
+.hc-divider{height:1px;background:var(--border);margin:20px 0;}
+.hc-stat-row{display:flex;gap:0;margin-bottom:12px;}
+.hc-stat{flex:1;text-align:center;padding:12px 8px;background:var(--bg3);border-radius:8px;margin:0 4px;}
+.hc-stat:first-child{margin-left:0;}
+.hc-stat:last-child{margin-right:0;}
+.hc-stat-n{font-family:var(--font-d);font-weight:600;font-size:1.4rem;color:var(--cyan);}
+.hc-stat-l{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;font-family:var(--font-m);}
+.hc-tag-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;}
+.hc-tag{
+  padding:4px 12px;background:rgba(59,130,246,.08);
+  border:1px solid rgba(59,130,246,.2);border-radius:100px;
+  font-size:.65rem;font-family:var(--font-m);color:var(--muted);
+}
+.hc-rec{
+  margin-top:16px;padding:14px;background:rgba(245,158,11,.05);
+  border:1px solid rgba(245,158,11,.15);border-radius:8px;
+}
+.hc-rec-label{font-family:var(--font-m);font-size:.62rem;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;}
+.hc-rec-text{font-size:.78rem;color:var(--muted);line-height:1.6;}
+ 
+@keyframes up{to{opacity:1;transform:translateY(0) scale(1);}}
+ 
+/* ── SCROLL HINT ── */
+.scroll-hint{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:up 1s 1.4s forwards;
+}
+.scroll-bar{width:1px;height:48px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:sb 2s ease-in-out infinite;}
+@keyframes sb{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+.scroll-lbl{font-family:var(--font-m);font-size:.62rem;color:var(--dim);letter-spacing:.15em;text-transform:uppercase;}
+ 
+/* ── SECTIONS ── */
+section{padding:110px 64px;position:relative;}
+.sec-inner{max-width:1280px;margin:0 auto;}
+.sec-chip{
+  font-family:var(--font-m);font-size:.68rem;color:var(--cyan);
+  letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px;
+  display:flex;align-items:center;gap:12px;
+}
+.sec-chip::before{content:'//';color:var(--dim);}
+.sec-h{
+  font-family:var(--font-d);font-weight:700;
+  font-size:clamp(2rem,3.5vw,2.8rem);
+  color:var(--ink);line-height:1.1;letter-spacing:-.025em;margin-bottom:14px;
+}
+.sec-sub{color:var(--muted);font-size:1rem;max-width:520px;line-height:1.85;}
+ 
+/* reveal */
+.rv{opacity:0;transform:translateY(36px);transition:opacity .65s ease,transform .65s ease;}
+.rv.on{opacity:1;transform:none;}
+.rv.d1{transition-delay:.08s}.rv.d2{transition-delay:.16s}.rv.d3{transition-delay:.24s}
+.rv.d4{transition-delay:.32s}.rv.d5{transition-delay:.4s}
+ 
+/* ── ABOUT ── */
+#about{background:var(--bg2);}
+.about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:start;margin-top:64px;}
+.about-p{color:var(--muted);line-height:1.95;margin-bottom:22px;font-size:.98rem;}
+.about-p strong{color:var(--ink);font-weight:500;}
+.about-p .hl{color:var(--cyan);font-family:var(--font-m);font-size:.93em;}
+.stack-label{font-family:var(--font-d);font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:36px 0 14px;}
+.stack-wrap{display:flex;flex-wrap:wrap;gap:8px;}
+.stag{
+  padding:5px 13px;background:rgba(59,130,246,.06);
+  border:1px solid rgba(59,130,246,.18);border-radius:2px;
+  color:var(--ink);font-family:var(--font-m);font-size:.7rem;
+  letter-spacing:.04em;transition:all .25s;cursor:default;
+}
+.stag:hover{background:rgba(0,229,255,.1);border-color:var(--cyan);color:var(--cyan);transform:translateY(-2px);}
+ 
+.about-cards{display:flex;flex-direction:column;gap:16px;}
+.about-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:24px 28px;position:relative;overflow:hidden;
+  transition:border-color .3s,transform .3s;
+}
+.about-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--blue),var(--cyan));
+  transform:scaleX(0);transform-origin:left;transition:transform .35s;
+}
+.about-card:hover{border-color:rgba(0,229,255,.2);transform:translateX(5px);}
+.about-card:hover::after{transform:scaleX(1);}
+.ac-big{font-family:var(--font-d);font-weight:700;font-size:2.6rem;line-height:1;background:linear-gradient(135deg,var(--cyan),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.ac-lbl{color:var(--muted);font-size:.84rem;margin-top:5px;}
+.ac-sub{color:var(--ink);font-size:.78rem;margin-top:3px;font-family:var(--font-m);}
+ 
+/* ── EXPERIENCE ── */
+#experience{background:var(--bg);}
+.timeline{margin-top:64px;position:relative;padding-left:0;}
+.tl-line{position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--cyan),var(--blue),transparent);}
+.tl-item{padding-left:52px;margin-bottom:72px;position:relative;}
+.tl-dot{
+  position:absolute;left:-9px;top:8px;
+  width:19px;height:19px;border-radius:50%;
+  background:var(--bg);border:2px solid var(--cyan);
+  box-shadow:0 0 16px rgba(0,229,255,.35);
+  transition:transform .3s,box-shadow .3s;
+}
+.tl-item:hover .tl-dot{transform:scale(1.5);box-shadow:0 0 28px rgba(0,229,255,.55);}
+.tl-period{
+  font-family:var(--font-m);font-size:.7rem;color:var(--cyan);
+  letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:10px;
+}
+.tl-badge{
+  background:rgba(0,229,255,.07);border:1px solid rgba(0,229,255,.18);
+  border-radius:100px;padding:3px 12px;font-size:.65rem;
+}
+.tl-badge.cur{background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.25);color:var(--green);}
+.tl-role{font-family:var(--font-d);font-weight:600;font-size:1.3rem;color:var(--ink);margin-bottom:4px;}
+.tl-co{color:var(--cyan);font-size:.9rem;margin-bottom:20px;}
+.tl-buls{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.tl-buls li{
+  color:var(--muted);font-size:.92rem;line-height:1.8;
+  padding-left:20px;position:relative;
+}
+.tl-buls li::before{content:'→';position:absolute;left:0;color:var(--blue);font-size:.8rem;top:.05em;}
+.tl-buls li strong{color:var(--ink);font-weight:500;}
+.tl-buls li .perf{color:var(--cyan);font-family:var(--font-m);font-size:.88em;font-weight:500;}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;}
+.pill{
+  padding:3px 11px;background:var(--bg3);border:1px solid var(--border2);
+  border-radius:100px;font-size:.67rem;font-family:var(--font-m);
+  color:var(--muted);transition:all .2s;
+}
+.pill:hover{border-color:var(--cyan);color:var(--cyan);}
+ 
+/* ── PROJECTS ── */
+#projects{background:var(--bg2);}
+.proj-grid{display:flex;flex-direction:column;gap:32px;margin-top:64px;}
+.proj-subgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.proj-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:30px 26px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;
+  transition:transform .3s,border-color .3s,box-shadow .3s;
+}
+.proj-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(59,130,246,.05),transparent 60%);
+  opacity:0;transition:opacity .3s;
+}
+.proj-card:hover{transform:translateY(-6px);border-color:rgba(0,229,255,.22);box-shadow:0 24px 60px rgba(0,0,0,.35),0 0 40px rgba(0,229,255,.05);}
+.proj-card:hover::before{opacity:1;}
+.proj-card.feat{
+  width:100%;padding:42px 48px;
+  border-radius:16px;
+}
+.proj-icon{font-size:1.8rem;margin-bottom:16px;}
+.proj-chip{font-family:var(--font-m);font-size:.62rem;color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;}
+.proj-name{font-family:var(--font-d);font-weight:600;font-size:1.1rem;color:var(--ink);margin-bottom:10px;line-height:1.3;}
+.proj-desc{color:var(--muted);font-size:.93rem;line-height:1.85;flex:1;}
+.proj-desc strong{color:var(--ink);font-weight:500;}
+.proj-stack{display:flex;flex-wrap:wrap;gap:5px;margin-top:18px;}
+.stk{
+  padding:5px 14px;background:rgba(59,130,246,.08);
+  border:1px solid rgba(99,179,237,.18);border-radius:100px;
+  font-size:.72rem;font-family:var(--font-m);color:var(--ink);font-weight:400;
+  letter-spacing:.03em;transition:all .2s;
+}
+.stk:hover{background:rgba(0,229,255,.1);border-color:var(--cyan);color:var(--cyan);}
+.proj-impact{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);
+  border-radius:100px;padding:4px 12px;margin-top:14px;
+  font-family:var(--font-m);font-size:.67rem;color:var(--green);
+}
+
+/* ── PROJECT MEDIA (featured cards) ── */
+.proj-card.feat .proj-card-inner{
+  display:grid;
+  grid-template-columns:460px minmax(0,1fr);
+  gap:48px;
+  align-items:center;
+}
+.proj-card-text{
+  max-width:480px;display:flex;flex-direction:column;z-index:2;
+}
+.proj-card-media{
+  width:100%;min-width:0;display:flex;align-items:stretch;
+}
+.proj-media-frame{
+  width:100%;position:relative;border-radius:18px;overflow:hidden;
+  background:#0b111d;
+  min-height:560px;flex:1;
+  display:flex;align-items:center;justify-content:center;
+  padding:24px;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,.45),
+    0 0 40px rgba(0,229,255,.06);
+  transition:box-shadow .4s,border-color .3s;
+  border:1px solid rgba(255,255,255,.06);
+}
+.proj-media-frame.has-portrait{min-height:700px;}
+.proj-media-frame.has-portrait .proj-media-dots{bottom:14px;}
+.proj-card:hover .proj-media-frame{
+  border-color:rgba(0,229,255,.2);
+  box-shadow:
+    0 40px 100px rgba(0,0,0,.5),
+    0 0 60px rgba(0,229,255,.12);
+}
+.proj-media-img{
+  position:absolute;top:50%;left:50%;max-width:calc(100% - 48px);max-height:700px;
+  width:auto;height:auto;
+  object-fit:contain;object-position:center;
+  display:block;
+  opacity:0;pointer-events:none;transition:opacity .25s ease,transform .25s ease;
+  cursor:pointer;z-index:1;
+  image-rendering:auto;
+  transform:translate(-50%,-50%) translateZ(0);
+  backface-visibility:hidden;
+}
+.proj-media-img.portrait{max-height:calc(100% - 64px);}
+.proj-media-img.landscape{width:calc(100% - 48px);max-width:calc(100% - 48px);}
+.proj-card:hover .proj-media-img.active{transform:translate(-50%,-50%) translateZ(0) scale(1.01);}
+.proj-media-img.active{opacity:1;pointer-events:auto;}
+.proj-media-placeholder{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  color:var(--dim);padding:20px;text-align:center;
+}
+.proj-media-placeholder svg{opacity:.3;}
+.proj-media-placeholder span{font-family:var(--font-m);font-size:.65rem;letter-spacing:.05em;color:var(--dim);}
+.proj-media-dots{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  display:flex;gap:6px;z-index:2;
+}
+.proj-media-dot{
+  width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.3);
+  cursor:pointer;transition:all .3s;border:none;padding:0;
+}
+.proj-media-dot.active{background:var(--cyan);width:18px;border-radius:4px;}
+.proj-media-dot:hover{background:rgba(255,255,255,.6);}
+.proj-media-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+  width:36px;height:36px;border-radius:50%;border:none;
+  background:rgba(0,0,0,.55);color:#fff;font-size:1.4rem;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .3s,background .2s;
+  backdrop-filter:blur(4px);padding:0;
+}
+.proj-media-frame:hover .proj-media-arrow{opacity:1;}
+.proj-media-arrow:hover{background:rgba(0,0,0,.8);}
+.proj-media-arrow:active{background:var(--cyan);color:#000;}
+.proj-media-prev{left:8px;}
+.proj-media-next{right:8px;}
+
+@media(max-width:1100px){
+  .proj-card.feat .proj-card-inner{grid-template-columns:1fr;}
+  .proj-card-text{max-width:100%;}
+  .proj-card-media{min-width:auto;width:100%;flex:auto;}
+  .proj-media-frame{min-height:400px;padding:16px;}
+  .proj-media-frame.has-portrait{min-height:620px;}
+  .proj-media-img{max-width:calc(100% - 32px);max-height:520px;}
+  .proj-media-img.portrait{max-height:calc(100% - 56px);}
+  .proj-media-img.landscape{width:calc(100% - 32px);max-width:calc(100% - 32px);}
+  .proj-card.feat{padding:30px 24px;}
+}
+/* ── LIGHTBOX ── */
+.media-lightbox{
+  position:fixed;inset:0;z-index:10000;
+  background:rgba(0,0,0,.92);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .35s ease;
+  backdrop-filter:blur(12px);
+}
+.media-lightbox.open{opacity:1;pointer-events:auto;}
+.media-lightbox-img{
+  max-width:94vw;max-height:92vh;
+  object-fit:contain;border-radius:10px;
+  box-shadow:0 40px 120px rgba(0,0,0,.6);
+  transform:scale(.98);transition:transform .25s ease;
+  image-rendering:auto;
+}
+.media-lightbox.open .media-lightbox-img{transform:scale(1);}
+.media-lightbox-close{
+  position:absolute;top:20px;right:24px;z-index:10001;
+  width:48px;height:48px;border-radius:50%;border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.12);color:#fff;
+  font-size:1.6rem;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;
+  transition:background .2s;
+  backdrop-filter:blur(8px);
+}
+.media-lightbox-close:hover{background:rgba(255,255,255,.18);}
+.media-lightbox-nav{
+  position:absolute;top:50%;transform:translateY(-50%);z-index:10001;
+  width:54px;height:54px;border-radius:50%;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.1);color:#fff;
+  font-size:2rem;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;
+  transition:background .2s,transform .2s;
+  backdrop-filter:blur(8px);
+}
+.media-lightbox-nav:hover{background:rgba(255,255,255,.14);transform:translateY(-50%) scale(1.08);}
+.media-lightbox-nav.prev{left:20px;}
+.media-lightbox-nav.next{right:20px;}
+.media-lightbox-counter{
+  position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  font-family:var(--font-m);font-size:.75rem;color:rgba(255,255,255,.4);
+  letter-spacing:.08em;z-index:10001;
+}
+@media(max-width:768px){
+  .media-lightbox-img{max-width:94vw;max-height:84vh;}
+  .media-lightbox-nav{width:40px;height:40px;font-size:1.4rem;}
+  .media-lightbox-nav.prev{left:8px;}
+  .media-lightbox-nav.next{right:8px;}
+  .media-lightbox-close{top:12px;right:12px;width:38px;height:38px;font-size:1.3rem;}
+}
+
+/* ── SKILLS ── */
+#skills{background:var(--bg);}
+.sk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:64px;}
+.sk-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:26px 28px;transition:border-color .3s;
+}
+.sk-card:hover{border-color:rgba(0,229,255,.18);}
+.sk-title{
+  font-family:var(--font-d);font-size:.78rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.sk-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.sk-items{display:flex;flex-wrap:wrap;gap:7px;}
+.sk-it{
+  padding:5px 13px;background:var(--bg3);border:1px solid var(--border2);
+  border-radius:3px;color:var(--ink);font-size:.76rem;
+  font-family:var(--font-b);transition:all .2s;
+}
+.sk-it:hover{background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.25);transform:translateY(-2px);}
+ 
+/* ── AI CHAT ── */
+#ai-chat{background:var(--bg2);position:relative;overflow:hidden;}
+#ai-chat::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 50% 100%,rgba(59,130,246,.06),transparent);
+  pointer-events:none;
+}
+.chat-wrap{
+  max-width:780px;margin:0 auto;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;margin-top:60px;
+  box-shadow:0 40px 100px rgba(0,0,0,.4),0 0 60px rgba(59,130,246,.06);
+}
+.chat-header{
+  padding:18px 24px;background:var(--bg3);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.chat-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;
+}
+.chat-hinfo{}
+.chat-hname{font-family:var(--font-d);font-size:.92rem;font-weight:600;color:var(--ink);}
+.chat-hstatus{font-family:var(--font-m);font-size:.67rem;color:var(--green);display:flex;align-items:center;gap:5px;margin-top:1px;}
+.chat-hstatus::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse-g 2s infinite;}
+.chat-msgs{
+  height:420px;overflow-y:auto;padding:24px;
+  display:flex;flex-direction:column;gap:16px;
+  scroll-behavior:smooth;
+}
+.chat-msgs::-webkit-scrollbar{width:2px;}
+.chat-msgs::-webkit-scrollbar-thumb{background:var(--dim);}
+.msg{display:flex;gap:12px;align-items:flex-start;max-width:88%;}
+.msg.user{flex-direction:row-reverse;align-self:flex-end;}
+.msg-av{
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;font-size:.8rem;position:relative;
+}
+.msg-av.ai-av{background:linear-gradient(135deg,var(--blue),var(--cyan));}
+.msg-av.usr-av{background:var(--bg3);border:1px solid var(--border);color:var(--muted);}
+.msg-bubble{
+  padding:12px 16px;border-radius:12px;
+  font-size:.88rem;line-height:1.75;
+}
+.msg.ai .msg-bubble{
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--muted);border-top-left-radius:2px;
+}
+.msg.user .msg-bubble{
+  background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(0,229,255,.12));
+  border:1px solid rgba(0,229,255,.18);
+  color:var(--ink);border-top-right-radius:2px;text-align:right;
+}
+.msg-bubble strong{color:var(--ink);}
+.msg-bubble .mono{font-family:var(--font-m);font-size:.82em;color:var(--cyan);}
+.msg-bubble a{
+  color:var(--cyan);
+  text-decoration:underline;
+  text-underline-offset:3px;
+  word-break:break-all;
+  pointer-events:auto;
+}
+.msg-bubble a:hover{color:var(--ink);}
+.typing{display:flex;align-items:center;gap:5px;padding:12px 16px;}
+.typing-dot{width:7px;height:7px;border-radius:50%;background:var(--dim);animation:typ .9s ease-in-out infinite;}
+.typing-dot:nth-child(2){animation-delay:.15s;}
+.typing-dot:nth-child(3){animation-delay:.3s;}
+@keyframes typ{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-6px);opacity:1}}
+.chat-input-wrap{
+  padding:16px 20px;border-top:1px solid var(--border);
+  display:flex;gap:10px;align-items:center;
+}
+.chat-input{
+  flex:1;background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:11px 16px;color:var(--ink);
+  font-family:var(--font-b);font-size:.9rem;outline:none;
+  transition:border-color .3s;
+}
+.chat-input:focus{border-color:rgba(0,229,255,.35);box-shadow:0 0 0 3px rgba(0,229,255,.05);}
+.chat-input::placeholder{color:var(--dim);}
+.chat-send{
+  padding:11px 20px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;border:none;border-radius:8px;
+  font-family:var(--font-m);font-size:.78rem;font-weight:500;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;letter-spacing:.04em;
+  white-space:nowrap;
+}
+.chat-send:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,.35);}
+.chat-send:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.chat-suggestions{
+  display:flex;flex-wrap:wrap;gap:8px;padding:0 20px 16px;
+}
+.sug{
+  padding:6px 14px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:100px;font-size:.72rem;font-family:var(--font-m);
+  color:var(--muted);cursor:pointer;transition:all .2s;
+}
+.sug:hover{border-color:var(--cyan);color:var(--cyan);}
+ 
+/* ── CONTACT ── */
+#contact{background:var(--bg);}
+.contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:64px;align-items:start;margin-top:64px;}
+.contact-h{
+  font-family:var(--font-d);font-weight:700;
+  font-size:clamp(1.8rem,3vw,2.6rem);
+  line-height:1.15;letter-spacing:-.025em;color:var(--ink);margin-bottom:18px;
+}
+.contact-h span{background:linear-gradient(135deg,var(--cyan),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.contact-desc{color:var(--muted);line-height:1.85;margin-bottom:36px;font-size:.96rem;}
+.contact-items{display:flex;flex-direction:column;gap:13px;}
+.contact-item{
+  display:flex;align-items:center;gap:16px;
+  color:var(--ink);text-decoration:none;
+  padding:15px 18px;background:var(--card);border:1px solid var(--border);
+  border-radius:8px;transition:all .3s;
+}
+.contact-item:hover{border-color:rgba(0,229,255,.25);transform:translateX(5px);background:rgba(0,229,255,.02);}
+.ci-icon{
+  width:36px;height:36px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(59,130,246,.2),rgba(0,229,255,.1));
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;
+}
+.ci-lbl{font-size:.68rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-family:var(--font-m);}
+.ci-val{font-size:.9rem;color:var(--ink);margin-top:2px;}
+ 
+.contact-form{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;padding:36px;
+}
+.cf-title{font-family:var(--font-d);font-weight:600;font-size:1.1rem;color:var(--ink);margin-bottom:24px;}
+.fg{margin-bottom:16px;}
+.fg label{font-size:.68rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-family:var(--font-m);margin-bottom:7px;display:block;}
+.fg input,.fg textarea{
+  width:100%;background:var(--bg3);border:1px solid var(--border);
+  border-radius:4px;padding:11px 14px;color:var(--ink);
+  font-family:var(--font-b);font-size:.9rem;outline:none;
+  transition:border-color .3s;resize:none;
+}
+.fg input:focus,.fg textarea:focus{border-color:rgba(0,229,255,.35);box-shadow:0 0 0 3px rgba(0,229,255,.05);}
+.fg textarea{height:110px;}
+.cf-btn{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;border:none;border-radius:4px;
+  font-family:var(--font-b);font-size:.9rem;font-weight:500;
+  letter-spacing:.06em;cursor:pointer;
+  transition:transform .2s,box-shadow .2s;
+  box-shadow:0 8px 28px rgba(59,130,246,.3);
+}
+.cf-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(59,130,246,.4);}
+ 
+/* ── FOOTER ── */
+footer{
+  padding:28px 64px;background:var(--bg);
+  border-top:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.fl{font-family:var(--font-m);font-size:.82rem;color:var(--dim);}
+.fl span{color:var(--cyan);}
+.fr{font-family:var(--font-m);font-size:.72rem;color:var(--dim);}
+ 
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  nav,section,#hero,footer{padding-left:28px;padding-right:28px;}
+  nav.scrolled{padding-left:28px;padding-right:28px;}
+  .nav-toggle{display:flex;}
+  .nav-links{
+    position:absolute;top:100%;left:28px;right:28px;
+    display:flex;flex-direction:column;align-items:stretch;gap:0;
+    padding:10px;background:rgba(8,13,23,.98);
+    border:1px solid var(--border);border-radius:10px;
+    box-shadow:0 24px 70px rgba(0,0,0,.42);
+    opacity:0;pointer-events:none;transform:translateY(-8px);
+    transition:opacity .25s,transform .25s;
+  }
+  nav.menu-open .nav-links{opacity:1;pointer-events:auto;transform:translateY(0);}
+  .nav-links a{display:block;padding:12px 14px;}
+  .nav-links .nav-cta{text-align:center;margin-top:4px;}
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-card{display:none;}
+  .about-grid{grid-template-columns:1fr;}
+  .proj-grid{grid-template-columns:1fr;}
+  .proj-card.feat{grid-column:span 1;}
+  .sk-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;}
+  footer{flex-direction:column;gap:10px;text-align:center;}
+}
+
+/* ── FLOATING CHAT WIDGET ── */
+.chat-fab{
+  position:fixed;bottom:28px;right:28px;z-index:9997;
+  width:60px;height:60px;border-radius:50%;overflow:hidden;padding:0;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  border:none;cursor:pointer;box-shadow:0 8px 32px rgba(59,130,246,.4);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .3s,box-shadow .3s;
+  animation:fab-in .6s .8s both;
+}
+@keyframes fab-in{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.chat-fab:hover{transform:scale(1.08);box-shadow:0 12px 48px rgba(59,130,246,.5);}
+.chat-fab.pulse{
+  animation:fab-pulse 1.8s ease-in-out 2;
+}
+@keyframes fab-pulse{
+  0%,100%{transform:scale(1);box-shadow:0 8px 32px rgba(59,130,246,.4);}
+  45%{transform:scale(1.08);box-shadow:0 12px 52px rgba(0,229,255,.55);}
+}
+.chat-fab svg{width:26px;height:26px;color:#fff;}
+.chat-fab-badge{
+  position:absolute;top:-4px;right:-4px;
+  width:20px;height:20px;border-radius:50%;background:var(--green);
+  font-size:.6rem;color:#fff;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-m);font-weight:600;
+  animation:pulse-g 2s infinite;
+}
+
+.chat-overlay{
+  position:fixed;inset:0;z-index:9998;
+  background:rgba(0,0,0,.45);
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.chat-overlay.open{opacity:1;pointer-events:auto;}
+
+.chat-modal{
+  position:fixed;bottom:100px;right:28px;z-index:9999;
+  width:420px;height:580px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+  box-shadow:0 40px 120px rgba(0,0,0,.5),0 0 80px rgba(59,130,246,.06);
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;transform:translateY(20px) scale(.96);
+  transition:opacity .3s,transform .3s;
+  transform-origin:bottom right;
+}
+.chat-modal.open{opacity:1;pointer-events:auto;transform:translateY(0) scale(1);}
+.chat-modal-header{
+  padding:16px 20px;background:var(--bg3);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:12px;
+}
+.chat-modal-av{
+  width:34px;height:34px;border-radius:50%;overflow:hidden;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;position:relative;
+}
+.chat-modal-hinfo{flex:1;}
+.chat-modal-hname{font-family:var(--font-d);font-size:.88rem;font-weight:600;color:var(--ink);}
+.chat-modal-hstatus{font-family:var(--font-m);font-size:.64rem;color:var(--green);display:flex;align-items:center;gap:5px;margin-top:1px;}
+.chat-modal-hstatus::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse-g 2s infinite;}
+.chat-modal-close{
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:var(--bg);color:var(--muted);cursor:pointer;
+  font-size:1.1rem;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;flex-shrink:0;
+}
+.chat-modal-close:hover{background:var(--dim);color:var(--ink);}
+.chat-modal-body{
+  flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:14px;
+  scroll-behavior:smooth;
+  overscroll-behavior:contain;
+}
+.chat-modal-body::-webkit-scrollbar{width:2px;}
+.chat-modal-body::-webkit-scrollbar-thumb{background:var(--dim);}
+.chat-modal-foot{
+  padding:14px 16px;border-top:1px solid var(--border);
+  display:flex;gap:8px;align-items:center;
+}
+.chat-modal-input{
+  flex:1;background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;color:var(--ink);
+  font-family:var(--font-b);font-size:.88rem;outline:none;
+  transition:border-color .3s;
+}
+.chat-modal-input:focus{border-color:rgba(0,229,255,.35);}
+.chat-modal-input::placeholder{color:var(--dim);}
+.chat-modal-send{
+  padding:10px 18px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;border:none;border-radius:8px;
+  font-family:var(--font-m);font-size:.75rem;font-weight:500;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;white-space:nowrap;
+}
+.chat-modal-send:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,.35);}
+.chat-modal-send:disabled{opacity:.5;cursor:not-allowed;}
+.chat-modal-sugs{
+  display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;
+}
+.chat-modal-sugs .sug{
+  padding:5px 12px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:100px;font-size:.68rem;font-family:var(--font-m);
+  color:var(--muted);cursor:pointer;transition:all .2s;
+}
+.chat-modal-sugs .sug:hover{border-color:var(--cyan);color:var(--cyan);}
+
+@media(max-width:600px){
+  .chat-modal{width:calc(100vw - 24px);height:min(76vh,640px);bottom:86px;right:12px;}
+  .chat-fab{bottom:20px;right:20px;width:54px;height:54px;}
+}
+
+/* ── FAB TOOLTIP ── */
+.chat-fab-tip{
+  position:fixed;bottom:92px;right:28px;z-index:9997;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:10px 14px;
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+  display:flex;align-items:center;gap:8px;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .3s,transform .3s;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.chat-fab-tip.show{opacity:1;transform:translateY(0);}
+.chat-fab-tip::after{
+  content:'';position:absolute;bottom:-6px;right:22px;
+  width:12px;height:12px;background:var(--card);
+  border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+  transform:rotate(45deg);
+}
+.chat-fab-tip-icon{
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;flex-shrink:0;
+}
+.chat-fab-tip-text{
+  font-family:var(--font-b);font-size:.78rem;color:var(--ink);
+  font-weight:400;line-height:1.3;
+}
+.chat-fab-tip-text small{color:var(--muted);font-size:.65rem;display:block;}
+
+/* hide tip when chat is open */
+
+@media(max-width:600px){.chat-fab-tip{display:none;}}
+
+/* ── IN-CHAT CONTACT FORM ── */
+.contact-inchat{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;padding:16px;margin-top:4px;
+}
+.contact-inchat-title{
+  font-family:var(--font-d);font-size:.82rem;font-weight:600;
+  color:var(--ink);margin-bottom:12px;
+}
+.contact-inchat .fg{margin-bottom:10px;}
+.contact-inchat .fg label{
+  font-size:.62rem;color:var(--muted);letter-spacing:.08em;
+  text-transform:uppercase;font-family:var(--font-m);margin-bottom:4px;display:block;
+}
+.contact-inchat .fg input,.contact-inchat .fg textarea{
+  width:100%;background:var(--bg);border:1px solid var(--border2);
+  border-radius:4px;padding:8px 10px;color:var(--ink);
+  font-family:var(--font-b);font-size:.82rem;outline:none;
+  transition:border-color .3s;resize:none;
+}
+.contact-inchat .fg input:focus,.contact-inchat .fg textarea:focus{
+  border-color:rgba(0,229,255,.3);
+}
+.contact-inchat .fg textarea{height:72px;}
+.contact-inchat-btn{
+  width:100%;padding:9px;
+  background:linear-gradient(135deg,var(--blue),var(--cyan));
+  color:#fff;border:none;border-radius:4px;
+  font-family:var(--font-m);font-size:.72rem;font-weight:500;
+  cursor:pointer;transition:transform .2s,box-shadow .2s;
+  letter-spacing:.04em;
+}
+.contact-inchat-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(59,130,246,.3);}
+.contact-inchat-btn:disabled{opacity:.5;cursor:not-allowed;}
+</style>
+</head>
+<body>
+ 
+<div class="cursor" id="C"></div>
+<div class="cursor-ring" id="CR"></div>
+ 
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">
+    <div class="dot"></div>
+    DK.AI
+  </a>
+  <button class="nav-toggle" type="button" onclick="toggleMenu()" aria-label="Open navigation" aria-expanded="false">
+    <span></span>
+  </button>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="javascript:void(0)" onclick="toggleChat()">Ask AI</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+ 
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        Available for opportunities
+      </div>
+      <h1 class="hero-name">
+        Deepak<br>
+        <span class="line2">Khimavath</span>
+      </h1>
+      <p class="hero-sub">
+        <strong>AI Platform & Developer Tools Engineer</strong> — I build the infrastructure
+        that helps engineering teams move faster. From <strong>agentic AI pipelines</strong>
+        to distributed FinTech microservices on <strong>Azure</strong>.
+      </p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-p">View My Work</a>
+        <a href="assets/Deepak_Khimavath_Resume_MASTER_v3.pdf" class="btn-r" target="_blank" rel="noopener">Resume</a>
+        <a href="javascript:void(0)" onclick="toggleChat()" class="btn-s">Ask AI About Me ↗</a>
+      </div>
+      <div class="hero-metrics">
+        <div>
+          <div class="metric-val">98%</div>
+          <div class="metric-lbl">Latency Reduced</div>
+        </div>
+        <div>
+          <div class="metric-val">150+</div>
+          <div class="metric-lbl">PRs Reviewed</div>
+        </div>
+        <div>
+          <div class="metric-val">6</div>
+          <div class="metric-lbl">Agent Pipeline</div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="hero-card rv">
+      <div class="hc-avatar">
+        <img src="https://i.postimg.cc/qM4sF288/deepakkhimavathh.png"
+             alt="Deepak"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+        <div class="hc-avatar-fallback" style="display:none">DK</div>
+      </div>
+      <div class="hc-name">Deepak Khimavath</div>
+      <div class="hc-title">// Trainee Engineer @ Eton Solutions</div>
+      <div class="hc-loc">📍 Bengaluru, Karnataka, India</div>
+      <div class="hc-divider"></div>
+      <div class="hc-stat-row">
+        <div class="hc-stat">
+          <div class="hc-stat-n">150+</div>
+          <div class="hc-stat-l">PRs Reviewed</div>
+        </div>
+        <div class="hc-stat">
+          <div class="hc-stat-n">3</div>
+          <div class="hc-stat-l">AI Systems</div>
+        </div>
+        <div class="hc-stat">
+          <div class="hc-stat-n">50+</div>
+          <div class="hc-stat-l">Microsvcs</div>
+        </div>
+      </div>
+      <div class="hc-tag-row">
+        <span class="hc-tag">Agentic AI</span>
+        <span class="hc-tag">LLM Infra</span>
+        <span class="hc-tag">RAG</span>
+        <span class="hc-tag">Azure</span>
+        <span class="hc-tag">C#/.NET</span>
+        <span class="hc-tag">Python</span>
+      </div>
+      <div class="hc-rec">
+        <div class="hc-rec-label">⭐ Leadership Recognition</div>
+        <div class="hc-rec-text">Recognized by Director of Engineering & Chief Solution Architect for independently driving the org's AI platform strategy.</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-bar"></div>
+    <span class="scroll-lbl">Scroll</span>
+  </div>
+</section>
+ 
+<!-- ABOUT -->
+<section id="about">
+  <div class="sec-inner">
+    <div class="rv">
+      <p class="sec-chip">Who I am</p>
+      <h2 class="sec-h">Engineer at heart.<br>Builder by nature.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text rv d1">
+        <p class="about-p">I'm an <strong>AI Platform & Developer Tools Engineer</strong> who builds production systems, not demos. I specialize in the intersection of <span class="hl">agentic AI</span>, <span class="hl">developer tooling</span>, and <span class="hl">distributed FinTech infrastructure</span> — systems where architecture, reliability, and scale actually matter.</p>
+        <p class="about-p">Currently at <strong>Eton Solutions</strong> as a Trainee Engineer, I build internal AI tooling for engineering workflows — a multi-provider LLM Visual Studio extension, a serverless autonomous PR review agent, and a 6-agent hierarchical code pipeline backed by a dual-layer RAG system.</p>
+        <p class="about-p">On the infrastructure side, I own three production financial microservices inside a <span class="hl">50+ microservice event-driven architecture</span>, and I have worked across the wider EDA platform. I resolved a critical processing bottleneck from <strong>15–20 hours to under 15 minutes</strong> across the distributed system, with recognition from senior engineering leadership for the AI platform work.</p>
+        <div class="stack-label">Core Stack</div>
+        <div class="stack-wrap">
+          <span class="stag">Python</span><span class="stag">C# / .NET</span><span class="stag">JavaScript</span>
+          <span class="stag">Claude / GPT-4 / Mistral</span><span class="stag">Azure AI</span><span class="stag">FastAPI</span>
+          <span class="stag">Qdrant</span><span class="stag">LlamaIndex</span><span class="stag">LangFuse</span>
+          <span class="stag">Azure Functions</span><span class="stag">Event-Driven Arch</span><span class="stag">RAG</span>
+          <span class="stag">VSIX / VS SDK</span><span class="stag">MSAL.NET</span><span class="stag">SQL</span>
+        </div>
+      </div>
+      <div class="about-cards rv d2">
+        <div class="about-card">
+          <div class="ac-big">15→15m</div>
+          <div class="ac-lbl">Performance Impact</div>
+          <div class="ac-sub">100K+ records: 15–20 hrs → 15 min</div>
+        </div>
+        <div class="about-card">
+          <div class="ac-big">150+</div>
+          <div class="ac-lbl">PRs Reviewed Autonomously</div>
+          <div class="ac-sub">Org-wide in 30 days, production</div>
+        </div>
+        <div class="about-card">
+          <div class="ac-big">6</div>
+          <div class="ac-lbl">Agent Pipeline (Eton ARC)</div>
+          <div class="ac-sub">Triage → Discovery → Council → Opus</div>
+        </div>
+        <div class="about-card">
+          <div class="ac-big">8.62</div>
+          <div class="ac-lbl">CGPA — B.E. CSE, 2025</div>
+          <div class="ac-sub">PES Institute of Technology</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="sec-inner">
+    <div class="rv">
+      <p class="sec-chip">Where I've worked</p>
+      <h2 class="sec-h">Experience</h2>
+      <p class="sec-sub">Production engineering at a FinTech product company — building AI infrastructure, microservices, and developer tooling that ships.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-line"></div>
+ 
+      <!-- Eton -->
+      <div class="tl-item rv d1">
+        <div class="tl-dot"></div>
+        <div class="tl-period">
+          <span>Jul 2025 — Present</span>
+          <span class="tl-badge cur">Current</span>
+        </div>
+        <div class="tl-role">AI Platform & Developer Tools Engineer — Trainee</div>
+        <div class="tl-co">Eton Solutions — Wealth Management Platform</div>
+        <ul class="tl-buls">
+          <li>Built internal <strong>AI platform tooling</strong> for engineering workflows — a VS extension, autonomous PR reviewer, and 6-agent code pipeline. Recognized by <strong>Director of Engineering & Chief Solution Architect</strong> for LLM and agentic AI work.</li>
+          <li>Resolved a critical EDA bottleneck: <span class="perf">15–20 hours → 15 minutes</span> across a 50+ microservice distributed system — a 98% latency reduction with zero regression.</li>
+          <li>End-to-end ownership of three production financial microservices inside the wider 50+ service EDA platform: <strong>EliminationService</strong> (trade logic), <strong>DFRulesProcessorService</strong> (rules engine), <strong>JournalEntryPersistService</strong> (ledger persistence).</li>
+          <li>Built a <strong>serverless PR Review Agent</strong> on Azure Functions that autonomously reviewed <span class="perf">150+ pull requests org-wide</span> — with delta re-reviews, @agent command system, and LangFuse observability.</li>
+          <li>Built <strong>Eton Dev</strong> — a VS 2022 VSIX extension embedding multi-provider LLM routing (Claude, Mistral, GPT-4), code review, auto-fix pipeline, and full Azure DevOps PR lifecycle in one panel.</li>
+          <li>Designed <strong>Eton ARC</strong> — a 6-agent hierarchical code pipeline (Triage → Discovery → Specialist Council → Moderator → Opus → Execute) backed by a dual-layer Qdrant + LlamaIndex RAG system.</li>
+        </ul>
+        <div class="pills">
+          <span class="pill">Python</span><span class="pill">C# / .NET</span><span class="pill">Azure Functions</span>
+          <span class="pill">Claude / GPT-4 / Mistral</span><span class="pill">Qdrant</span><span class="pill">LlamaIndex</span>
+          <span class="pill">LangFuse</span><span class="pill">VSIX / WebView2</span><span class="pill">MSAL.NET</span>
+          <span class="pill">Azure DevOps</span><span class="pill">FastAPI</span><span class="pill">EDA</span>
+        </div>
+      </div>
+ 
+      <!-- Spurzee -->
+      <div class="tl-item rv d2">
+        <div class="tl-dot"></div>
+        <div class="tl-period">
+          <span>Jul 2024 — Jun 2025</span>
+          <span class="tl-badge">Internship</span>
+        </div>
+        <div class="tl-role">Full-Stack Developer Intern</div>
+        <div class="tl-co">Spurzee Technologies — FinTech & Trading Systems</div>
+        <ul class="tl-buls">
+          <li>Built a <strong>real-time stock analytics platform</strong> with live candlestick visualization, SEBI market data APIs, and 20+ automated pattern detection algorithms.</li>
+          <li>Integrated <strong>LLM-assisted trade signal generation</strong> and automated options execution — improving data processing throughput by 25%.</li>
+          <li>Deployed a <strong>Random Forest regression model</strong> for stock price prediction — full lifecycle from training through production on AWS and DigitalOcean.</li>
+        </ul>
+        <div class="pills">
+          <span class="pill">Python</span><span class="pill">React</span><span class="pill">Node.js</span>
+          <span class="pill">Flask</span><span class="pill">AWS</span><span class="pill">DigitalOcean</span><span class="pill">SQL</span>
+        </div>
+      </div>
+ 
+      <!-- Mentorship -->
+      <div class="tl-item rv d3">
+        <div class="tl-dot"></div>
+        <div class="tl-period"><span>2025</span><span class="tl-badge">Invited</span></div>
+        <div class="tl-role">Alumni Mentor — Agentic AI & Developer Tooling</div>
+        <div class="tl-co">PES Institute of Technology and Management</div>
+        <ul class="tl-buls">
+          <li>Invited back to campus to conduct sessions on <strong>practical AI platform engineering</strong> — multi-agent system design, RAG architecture, LLM infrastructure, and the gap between academic ML and production AI.</li>
+          <li>Mentored juniors on agent orchestration patterns, <strong>prompt engineering discipline</strong>, and how AI-assisted developer workflows are structured in industry.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sec-inner">
+    <div class="rv">
+      <p class="sec-chip">What I've built</p>
+      <h2 class="sec-h">Engineering Projects</h2>
+    </div>
+    <div class="proj-grid">
+ 
+      <div class="proj-card feat rv d1">
+        <div class="proj-card-inner">
+          <div class="proj-card-text">
+            <div class="proj-icon">🤖</div>
+            <div class="proj-chip">Production · Serverless</div>
+            <div class="proj-name">PR Review Agent — Autonomous Code Review Platform</div>
+            <div class="proj-desc">
+              Serverless dual-function architecture on Azure Functions — HTTP trigger acknowledges Azure DevOps webhook in <strong>&lt;1 second</strong>; full LLM review runs async in queue-triggered processor with 9-minute budget. Handles <strong>150+ PRs org-wide</strong> with context-aware delta re-reviews, @agent command interface, and <strong>LangFuse observability</strong> tracing every LLM call. 900-line system prompt across 7 review dimensions with confidence-based finding downgrade and drop-in-ready code fixes.
+            </div>
+            <span class="proj-impact">✦ 150+ PRs reviewed autonomously in 30 days</span>
+            <div class="proj-stack">
+              <span class="stk">Python</span><span class="stk">Azure Functions</span><span class="stk">Azure DevOps</span>
+              <span class="stk">Mistral / Claude / GPT-4</span><span class="stk">LangFuse</span><span class="stk">FastAPI</span>
+            </div>
+          </div>
+          <div class="proj-card-media">
+            <div class="proj-media-frame">
+              <!-- 🔧 PR Review Agent screenshots -->
+              <img class="proj-media-img active" src="assets/images/pr-review1.png" alt="PR Review Agent dashboard"/>
+              <img class="proj-media-img" src="assets/images/pr-review2.png" alt="PR Review Agent review output"/>
+              <div class="proj-media-placeholder" id="prPlaceholder">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="8" y="6" width="32" height="36" rx="4" stroke="#3A4A60" stroke-width="2"/><path d="M16 18h16M16 24h12M16 30h8" stroke="#3A4A60" stroke-width="2" stroke-linecap="round"/></svg>
+                <span>Add PR Review screenshots</span>
+              </div>
+              <button class="proj-media-arrow proj-media-prev" onclick="prevProjMedia(this)" aria-label="Previous PR Review screenshot">‹</button>
+              <button class="proj-media-arrow proj-media-next" onclick="nextProjMedia(this)" aria-label="Next PR Review screenshot">›</button>
+              <div class="proj-media-dots" style="display:none">
+                <button class="proj-media-dot active" onclick="showProjMedia(this,0)" aria-label="Show PR Review screenshot 1"></button>
+                <button class="proj-media-dot" onclick="showProjMedia(this,1)" aria-label="Show PR Review screenshot 2"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="proj-card feat rv d2">
+        <div class="proj-card-inner">
+          <div class="proj-card-text">
+            <div class="proj-icon">🧠</div>
+            <div class="proj-chip">Production · Internal Platform</div>
+            <div class="proj-name">Eton Dev — AI Development Companion (VS Extension)</div>
+            <div class="proj-desc">
+              VSIX extension for Visual Studio 2022 — AI chat, pre-PR code review, bug investigation, two-phase auto-fix engine, and full Azure DevOps PR lifecycle in one panel. Multi-provider LLM routing (Claude, Mistral, GPT-4), silent MSAL WAM broker auth with AAD auto-discovery, undocumented TFS GUID resolution.
+            </div>
+            <div class="proj-stack">
+              <span class="stk">C# / .NET</span><span class="stk">WebView2</span><span class="stk">Python</span>
+              <span class="stk">MSAL.NET</span><span class="stk">Azure AI</span><span class="stk">VS SDK</span>
+            </div>
+          </div>
+          <div class="proj-card-media">
+            <div class="proj-media-frame">
+              <!-- 🔧 Eton Dev VSIX screenshots -->
+              <img class="proj-media-img active" src="assets/images/vs-extension.png" alt="Eton Dev VS Extension main view"/>
+              <img class="proj-media-img" src="assets/images/visualstudio_1st.png" alt="Eton Dev Visual Studio integration"/>
+              <img class="proj-media-img" src="assets/images/orbit.png" alt="Eton Dev Orbit feature"/>
+              <img class="proj-media-img" src="assets/images/orbit_investigation.png" alt="Eton Dev investigation tool"/>
+              <div class="proj-media-placeholder" id="etonPlaceholder">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect x="6" y="6" width="36" height="36" rx="4" stroke="#3A4A60" stroke-width="2"/><path d="M16 16l8 8-8 8" stroke="#3A4A60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Add VS Extension screenshots</span>
+              </div>
+              <button class="proj-media-arrow proj-media-prev" onclick="prevProjMedia(this)" aria-label="Previous Eton Dev screenshot">‹</button>
+              <button class="proj-media-arrow proj-media-next" onclick="nextProjMedia(this)" aria-label="Next Eton Dev screenshot">›</button>
+              <div class="proj-media-dots" style="display:none">
+                <button class="proj-media-dot active" onclick="showProjMedia(this,0)" aria-label="Show Eton Dev screenshot 1"></button>
+                <button class="proj-media-dot" onclick="showProjMedia(this,1)" aria-label="Show Eton Dev screenshot 2"></button>
+                <button class="proj-media-dot" onclick="showProjMedia(this,2)" aria-label="Show Eton Dev screenshot 3"></button>
+                <button class="proj-media-dot" onclick="showProjMedia(this,3)" aria-label="Show Eton Dev screenshot 4"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="proj-card feat rv d3">
+        <div class="proj-card-inner">
+          <div class="proj-card-text">
+            <div class="proj-icon">⚡</div>
+            <div class="proj-chip">Research-grade Prototype · Multi-Agent</div>
+            <div class="proj-name">Eton ARC — 6-Agent Code Intelligence Pipeline</div>
+            <div class="proj-desc">
+              Hierarchical AI pipeline: <strong>Triage (Haiku) → grep-first Discovery → parallel Specialist Council (Sonnet) → Moderator → Opus Principal Review → Execute</strong>. Takes a Jira ticket, produces verified file-level diffs and xUnit test stubs ready for Claude Code. Dual-layer RAG: Qdrant vector DB (80-line overlapping chunks, 384-dim embeddings, 11 services) + LlamaIndex retrieval pipeline. Opus issues <strong>GO / CONDITIONAL-GO / NO-GO</strong> with full AC coverage verification.
+            </div>
+            <span class="proj-impact">✦ Tested on live tickets · 11 production services indexed</span>
+            <div class="proj-stack">
+              <span class="stk">Claude Opus 4.5</span><span class="stk">Sonnet / Haiku</span><span class="stk">Qdrant</span>
+              <span class="stk">LlamaIndex</span><span class="stk">FastAPI</span><span class="stk">Python</span>
+            </div>
+          </div>
+          <div class="proj-card-media">
+            <div class="proj-media-frame">
+              <!-- 🔧 Eton ARC 6-Agent pipeline screenshots -->
+              <img class="proj-media-img active" src="assets/images/6model-1.png" alt="Eton ARC architecture overview"/>
+              <img class="proj-media-img" src="assets/images/6model-2.png" alt="Eton ARC agent workflow"/>
+              <img class="proj-media-img" src="assets/images/6model-3.png" alt="Eton ARC pipeline details"/>
+              <img class="proj-media-img" src="assets/images/6model-4.png" alt="Eton ARC system diagram"/>
+              <div class="proj-media-placeholder" id="arcPlaceholder">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="16" r="6" stroke="#3A4A60" stroke-width="2"/><circle cx="14" cy="32" r="6" stroke="#3A4A60" stroke-width="2"/><circle cx="34" cy="32" r="6" stroke="#3A4A60" stroke-width="2"/><path d="M24 22l-6 8M24 22l6 8" stroke="#3A4A60" stroke-width="2" stroke-linecap="round"/></svg>
+                <span>Add pipeline architecture images</span>
+              </div>
+              <button class="proj-media-arrow proj-media-prev" onclick="prevProjMedia(this)" aria-label="Previous Eton ARC screenshot">‹</button>
+              <button class="proj-media-arrow proj-media-next" onclick="nextProjMedia(this)" aria-label="Next Eton ARC screenshot">›</button>
+              <div class="proj-media-dots" style="display:none">
+                <button class="proj-media-dot active" onclick="showProjMedia(this,0)" aria-label="Show Eton ARC screenshot 1"></button>
+                <button class="proj-media-dot" onclick="showProjMedia(this,1)" aria-label="Show Eton ARC screenshot 2"></button>
+                <button class="proj-media-dot" onclick="showProjMedia(this,2)" aria-label="Show Eton ARC screenshot 3"></button>
+                <button class="proj-media-dot" onclick="showProjMedia(this,3)" aria-label="Show Eton ARC screenshot 4"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <div class="proj-subgrid">
+        <div class="proj-card rv d4">
+          <div class="proj-icon">⚛️</div>
+          <div class="proj-chip">Research · Final Year</div>
+          <div class="proj-name">Insurance Risk via Quantum Computing</div>
+          <div class="proj-desc">Quantum Random Forest on IBM Quantum (Qiskit) for insurance risk assessment with stakeholder-facing dashboards.</div>
+          <div class="proj-stack">
+            <span class="stk">Qiskit</span><span class="stk">IBM Quantum</span><span class="stk">Python</span><span class="stk">Power BI</span>
+          </div>
+        </div>
+        <div class="proj-card rv d5">
+          <div class="proj-icon">📈</div>
+          <div class="proj-chip">Research · ML</div>
+          <div class="proj-name">LSTM + Sentiment Analysis — Stock Forecasting</div>
+          <div class="proj-desc">LSTM + financial news NLP pipeline benchmarked against 5 regression models. 15% forecast accuracy improvement.</div>
+          <div class="proj-stack">
+            <span class="stk">PyTorch</span><span class="stk">LSTM</span><span class="stk">NLP</span><span class="stk">scikit-learn</span>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+ 
+<!-- SKILLS -->
+<section id="skills">
+  <div class="sec-inner">
+    <div class="rv">
+      <p class="sec-chip">Toolbox</p>
+      <h2 class="sec-h">Technical Skills</h2>
+    </div>
+    <div class="sk-grid">
+      <div class="sk-card rv d1">
+        <div class="sk-title">AI & Agentic Systems</div>
+        <div class="sk-items">
+          <span class="sk-it">Multi-agent orchestration</span><span class="sk-it">LLM infrastructure</span>
+          <span class="sk-it">GenAI / RAG</span><span class="sk-it">LlamaIndex</span><span class="sk-it">Qdrant</span>
+          <span class="sk-it">LangFuse</span><span class="sk-it">Prompt engineering</span>
+          <span class="sk-it">AI observability</span><span class="sk-it">MCP</span>
+          <span class="sk-it">Tool calling</span><span class="sk-it">Vector databases</span>
+        </div>
+      </div>
+      <div class="sk-card rv d2">
+        <div class="sk-title">Languages & Backend</div>
+        <div class="sk-items">
+          <span class="sk-it">Python</span><span class="sk-it">C# / .NET</span><span class="sk-it">JavaScript</span>
+          <span class="sk-it">Java</span><span class="sk-it">C/C++</span><span class="sk-it">SQL</span>
+          <span class="sk-it">FastAPI</span><span class="sk-it">Flask</span><span class="sk-it">Node.js</span>
+          <span class="sk-it">REST APIs</span><span class="sk-it">Dapper</span>
+        </div>
+      </div>
+      <div class="sk-card rv d3">
+        <div class="sk-title">Cloud & DevOps</div>
+        <div class="sk-items">
+          <span class="sk-it">Azure Functions</span><span class="sk-it">Azure AI</span>
+          <span class="sk-it">Azure DevOps REST API</span><span class="sk-it">Azure Event Grid</span>
+          <span class="sk-it">AWS</span><span class="sk-it">DigitalOcean</span>
+          <span class="sk-it">Docker</span><span class="sk-it">GitHub Actions</span>
+          <span class="sk-it">CI/CD</span><span class="sk-it">VSIX / MSBuild</span>
+        </div>
+      </div>
+      <div class="sk-card rv d4">
+        <div class="sk-title">Architecture & Infra</div>
+        <div class="sk-items">
+          <span class="sk-it">Event-driven architecture</span><span class="sk-it">Microservices</span>
+          <span class="sk-it">Distributed systems</span><span class="sk-it">Message queues</span>
+          <span class="sk-it">MSAL.NET / OAuth 2.0</span><span class="sk-it">WebView2</span>
+          <span class="sk-it">VS SDK (WPF, VSCT)</span><span class="sk-it">PyTorch</span>
+          <span class="sk-it">sentence-transformers</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- FLOATING AI CHAT -->
+<div class="chat-overlay" id="chatOverlay" onclick="closeChat()"></div>
+
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" aria-label="Ask Deepak's AI">
+  <img src="https://i.postimg.cc/xCsPyC46/Chat-GPT-Image-May-16-2026-04-58-03-PM.png" alt="AI" style="width:100%;height:100%;border-radius:50%;object-fit:contain;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+  <div class="chat-fab-badge" id="chatBadge">1</div>
+</button>
+
+<div class="chat-fab-tip" id="chatFabTip">
+  <div class="chat-fab-tip-icon">🤖</div>
+  <div class="chat-fab-tip-text">
+    Ask Deepak's AI<br><small>Projects, impact, skills, or role fit.</small>
+  </div>
+</div>
+
+<div class="chat-modal" id="chatModal">
+  <div class="chat-modal-header">
+    <div class="chat-modal-av" id="chatAvHead">
+      <img src="https://i.postimg.cc/xCsPyC46/Chat-GPT-Image-May-16-2026-04-58-03-PM.png" alt="AI" style="width:100%;height:100%;border-radius:50%;object-fit:contain;display:block" onerror="this.style.display='none';document.getElementById('chatAvText').style.display='flex'"/>
+      <span id="chatAvText" style="display:none">🤖</span>
+    </div>
+    <div class="chat-modal-hinfo">
+      <div class="chat-modal-hname">Deepak's AI</div>
+      <div class="chat-modal-hstatus">Online — trained on Deepak's portfolio</div>
+    </div>
+    <button class="chat-modal-close" onclick="closeChat()">✕</button>
+  </div>
+  <div class="chat-modal-body" id="chatMsgs">
+    <div class="msg ai">
+      <div class="msg-av ai-av" style="overflow:hidden"><img src="https://i.postimg.cc/xCsPyC46/Chat-GPT-Image-May-16-2026-04-58-03-PM.png" alt="AI" style="width:100%;height:100%;border-radius:50%;object-fit:contain;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span style="display:none">🤖</span></div>
+      <div class="msg-bubble">
+        Hi, I can answer questions about Deepak's production engineering work, AI tooling, microservices ownership, and project impact. Ask about his projects, skills, experience, or fit for a role.
+      </div>
+    </div>
+  </div>
+  <div class="chat-modal-sugs" id="chatSugs">
+    <span class="sug" onclick="sendSug(this)">What's the architecture behind Eton Dev?</span>
+    <span class="sug" onclick="sendSug(this)">How does the 6-agent pipeline work?</span>
+    <span class="sug" onclick="sendSug(this)">What was the 98% latency fix?</span>
+    <span class="sug" onclick="sendSug(this)">Deepak's GitHub & LinkedIn →</span>
+    <span class="sug" onclick="sendContactForm()">📬 Send a message to Deepak</span>
+  </div>
+  <div class="chat-modal-foot">
+    <input class="chat-modal-input" id="chatIn" placeholder="Ask about Deepak's work..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+    <button class="chat-modal-send" id="chatBtn" onclick="sendMsg()">Send</button>
+  </div>
+</div>
+ 
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sec-inner">
+    <div class="rv">
+      <p class="sec-chip">Let's connect</p>
+      <h2 class="sec-h">Get In Touch</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="rv d1">
+        <h3 class="contact-h">Open to <span>great<br>opportunities</span></h3>
+        <p class="contact-desc">AI platform roles, developer tooling, agentic systems, backend infrastructure — if it's technically challenging and impactful, I'm interested. Open to remote and relocation.</p>
+        <div class="contact-items">
+          <a href="mailto:khimavathdeepak@gmail.com" class="contact-item">
+            <div class="ci-icon">✉️</div>
+            <div><div class="ci-lbl">Email</div><div class="ci-val">khimavathdeepak@gmail.com</div></div>
+          </a>
+          <a href="tel:+917204209095" class="contact-item">
+            <div class="ci-icon">📞</div>
+            <div><div class="ci-lbl">Phone</div><div class="ci-val">+91 7204209095</div></div>
+          </a>
+          <a href="https://linkedin.com/in/deepak-khimavath-338074219" target="_blank" rel="noopener" class="contact-item">
+            <div class="ci-icon">💼</div>
+            <div><div class="ci-lbl">LinkedIn</div><div class="ci-val">deepak-khimavath-338074219</div></div>
+          </a>
+          <a href="https://github.com/DeepakkhimavathBB" target="_blank" rel="noopener" class="contact-item">
+            <div class="ci-icon">🐙</div>
+            <div><div class="ci-lbl">GitHub</div><div class="ci-val">DeepakkhimavathBB</div></div>
+          </a>
+        </div>
+      </div>
+      <div class="contact-form rv d2">
+        <div class="cf-title">Send a message</div>
+        <!-- Formspree active — messages go to khimavathdeepak@gmail.com -->
+        <form id="contactForm" action="https://formspree.io/f/xgodgbao" method="POST">
+          <div class="fg"><label>Name</label><input type="text" name="name" placeholder="Your name" required/></div>
+          <div class="fg"><label>Email</label><input type="email" name="email" placeholder="your@email.com" required/></div>
+          <div class="fg"><label>Message</label><textarea name="message" placeholder="Tell me about the opportunity..." required></textarea></div>
+          <button type="submit" class="cf-btn" id="cfBtn">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- FOOTER -->
+<footer>
+  <div class="fl">DK<span>.</span>AI — Deepak Khimavath</div>
+  <div class="fr">// Karnataka, India · Open to Remote & Relocation</div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="media-lightbox" id="mediaLightbox" aria-hidden="true">
+  <button class="media-lightbox-close" onclick="closeLightbox()" aria-label="Close screenshot preview">×</button>
+  <button class="media-lightbox-nav prev" onclick="prevLightbox()" aria-label="Previous screenshot">‹</button>
+  <button class="media-lightbox-nav next" onclick="nextLightbox()" aria-label="Next screenshot">›</button>
+  <img class="media-lightbox-img" src="" alt="Screenshot preview"/>
+  <span class="media-lightbox-counter"></span>
+</div>
+
+<script>
+// ── SYSTEM PROMPT ─────────────────────────────────────────────────────────────
+const SYSTEM = `You are an expert AI assistant representing Deepak Khimavath — an AI Platform & Developer Tools Engineer. Your tone is sharp, technically precise, and confident. You speak about Deepak's work with the depth of someone who has lived it. Answer in first person ("Deepak is..." or "He built..."). Never speculate or make up information.
+
+## CONTACT & LINKS
+- Email: khimavathdeepak@gmail.com
+- Phone: +91 7204209095
+- LinkedIn: https://linkedin.com/in/deepak-khimavath-338074219
+- GitHub: https://github.com/DeepakkhimavathBB
+- Location: Bengaluru, Karnataka, India
+- Open to: Remote & Relocation worldwide — actively looking for AI platform, developer tooling, agentic systems, and backend infrastructure roles
+- Best way to reach: Email (khimavathdeepak@gmail.com) or LinkedIn DM
+
+When sharing GitHub or LinkedIn, always provide clickable links: https://github.com/DeepakkhimavathBB and https://linkedin.com/in/deepak-khimavath-338074219
+
+## CONCISENESS (CRITICAL)
+- Answer ONLY what was asked. If someone asks "what's your experience", list the roles with dates and 1 line each — NOT every bullet point.
+- If someone asks "current company", just say the company name and role. Don't dump achievements.
+- Be sharp and precise, like an expert who doesn't need to over-explain.
+- Use 2-4 sentences unless asked for details. Let the user ask follow-ups.
+
+## CONTACT HANDLING (CRITICAL RULES)
+- When someone asks to "send a message", "contact Deepak", "email Deepak", or "reach out" — you MUST NOT pretend to send anything yourself. Instead, tell them to use the "📬 Send a message to Deepak" button in the chat suggestions, or email him directly at khimavathdeepak@gmail.com
+- If someone says they're a recruiter or have an opportunity, enthusiastically encourage them to use the contact form or send an email. Say "Deepak would love to hear about this opportunity — please use the 📬 Send a message form in the chat or email him directly."
+- Never hallucinate sending emails, never make up contact information. Only use the real info provided above.
+ 
+## CURRENT ROLE
+Trainee Engineer at Eton Solutions (Jul 2025–Present), a wealth management FinTech platform with 50+ microservices on an event-driven architecture. Deepak owns 3 production financial microservices, has worked across the wider EDA platform, and was recognized by the Director of Engineering and Chief Solution Architect specifically for his LLM and agentic AI work.
+ 
+## KEY ACHIEVEMENTS
+- Resolved a critical EDA processing bottleneck: 15–20 hours → under 15 minutes (98% reduction) across 50+ microservices with zero regression
+- Owns 3 production microservices end-to-end inside the wider 50+ service EDA platform: EliminationService (trade elimination), DFRulesProcessorService (rules evaluation), JournalEntryPersistService (ledger persistence)
+- Built and shipped 3 production AI systems as sole engineer
+ 
+## PROJECT 1: PR Review Agent (Production)
+- Serverless Azure Functions (Python) — autonomous code reviewer
+- 150+ PRs reviewed org-wide in 30 days
+- Dual-function architecture: HTTP trigger (<1s response) + queue-triggered processor (9-min timeout)
+- Handles 3 Azure DevOps event types: PR created, updated (new commit), commented (@agent commands)
+- Context-aware delta re-reviews — extracts prior findings and checks if each was fixed, partial, or still present
+- @agent command system: re-review, skip, focus, context inject, explain finding — nested reply threading
+- 4-variant webhook thread ID resolution with REST API fallback
+- 900-line system prompt across 7 review dimensions
+- LangFuse observability for LLM call tracing and monitoring
+- Confidence-based finding downgrade (MEDIUM/LOW BLOCKING → WARNING)
+- Commit-keyed permanent deduplication
+- Multi-repo from single Function App via runtime PR URL parsing
+- Stack: Python, Azure Functions, Azure Storage Queue, Mistral/Claude/GPT-4, Azure DevOps REST API v7.0, Jira REST API, LangFuse
+ 
+## PROJECT 2: Eton Dev (Production — Visual Studio VSIX Extension)
+- Full AI development companion embedded in Visual Studio 2022
+- Single WebView2 panel: AI chat, pre-PR code review, bug investigation, one-click auto-fix, Azure DevOps PR creation
+- Eliminates 5+ context switches per PR cycle
+- Multi-provider LLM routing: Claude (Azure AI), Mistral, GPT-4 (Azure OpenAI), custom LocalChatGPT — repo-aware automatic routing
+- AI code review engine: analyzes git diffs across 7 dimensions with Jira ticket context injection
+- Two-phase auto-fix pipeline: Planner (validates fix scope ±3 lines) → Patch Generator (anchored old/new block with atomic writes + .bak backup)
+- Azure DevOps PR lifecycle: branch management, AI-generated descriptions, IdentityPicker TFS storage-key GUID resolution (undocumented), reviewer assignment, draft PRs
+- Enterprise auth: silent MSAL WAM broker + AAD auto-discovery + browser-based SSO fallback + JIT JWT caching
+- Orbit bug intelligence client: two-layer auth (Azure Easy Auth + App JWT), domain-aware Q&A (MTM, GL, Bill Pay etc)
+- Stack: C#, .NET Framework 4.7.2, WebView2, Python, MSAL.NET, Azure DevOps, Jira, VS SDK, WPF, VSCT
+ 
+## PROJECT 3: Eton ARC — 6-Agent Code Intelligence Pipeline (Research-grade Prototype)
+- Takes a Jira ticket → produces verified file-level diffs, PR description, xUnit test stubs → ready for Claude Code
+- 6-agent hierarchy: Triage (Haiku) → Discovery/Router (Haiku, grep-first) → Specialist Council (Sonnet, parallel per service) → Moderator (Sonnet) → Opus Principal Review (Opus 4.5) → Execute (Sonnet)
+- Developer confirmation gates at each stage
+- Dual-layer RAG: Qdrant vector DB (80-line overlapping chunks, 384-dim all-MiniLM-L6-v2 embeddings, 11 services) + LlamaIndex retrieval pipeline
+- Grep-first discovery: exact code identifiers beat semantic search; Qdrant as fallback
+- Opus GO/CONDITIONAL-GO/NO-GO verdict with per-file evidence, AC coverage map, regression risk, scope-creep removal
+- 11 production services indexed (Elimination, Evaluate, Transaction, Enrichment, Offset, JournalEntryPersist, HoldingPersist, AlhPersist, PostGLPersist, Workflow, Ntp)
+- Stack: Python, Claude Opus 4.5/Sonnet/Haiku, Qdrant, LlamaIndex, FastAPI, Azure DevOps, Jira
+ 
+## PREVIOUS ROLE: Spurzee Technologies Intern (Jul 2024 – Jun 2025)
+- Real-time stock analytics platform with automated options trading
+- LLM-assisted trade signal generation, 20+ pattern detection algorithms
+- Random Forest regression for price prediction
+- 25% data processing throughput improvement
+- Stack: Python, React, Node.js, Flask, AWS, DigitalOcean, SQL
+ 
+## TECHNICAL SKILLS
+- AI & Agentic: Multi-agent orchestration, LLM infrastructure, GenAI/RAG, LlamaIndex, Qdrant, LangFuse, prompt engineering, AI observability, MCP (Model Context Protocol), tool calling, vector databases
+- Languages: Python, C#, JavaScript, Java, C/C++, SQL
+- Cloud: Azure Functions, Azure AI (Claude/GPT-4), Azure DevOps REST API, Azure Event Grid, AWS, DigitalOcean, Docker, GitHub Actions
+- Backend: FastAPI, Flask, Node.js, event-driven architecture, distributed microservices, message queues, WebView2, MSAL.NET, OAuth 2.0, JWT, REST APIs
+- Tooling: Visual Studio SDK, VS Code extension API, sentence-transformers, PyTorch, TensorFlow
+ 
+## EDUCATION
+B.E. Computer Science & Engineering, PES Institute of Technology and Management, Shivamogga — GPA: 8.62/10 (2021–2025)
+ 
+## RECOGNITION
+- IEEE Conference paper presenter on emerging technologies
+- Recognized by Director of Engineering and Chief Solution Architect for agentic AI/LLM work
+ 
+## PERSONAL
+- Based in Bengaluru, Karnataka, India
+- Open to all challenging roles in AI platform engineering, developer tooling, agentic systems, backend infrastructure
+- Interested in roles at AI-first companies (Anthropic, Cursor, OpenAI, startups)
+- Open to remote and relocation
+- Languages: English, Kannada, Hindi
+- Alumni mentor at PESITM — teaches agentic AI and production AI engineering to juniors
+ 
+Always provide Deepak's contact info (GitHub, LinkedIn, email) when asked. If a recruiter or visitor wants to reach Deepak, encourage them to use the contact form on the page or email him directly. If asked something genuinely not covered above, say you don't have that specific information but direct them to reach out to Deepak directly.`;
+ 
+// ── AGENT LOGO ────────────────────────────────────────────────────────────────
+const AGENT_LOGO = 'https://i.postimg.cc/xCsPyC46/Chat-GPT-Image-May-16-2026-04-58-03-PM.png';
+// 🔧 Replace the URL above with your own agent logo image
+
+// ── CHAT API ─────────────────────────────────────────────────────────────────
+const CHAT_API_URL = '/api/chat';
+ 
+let chatHistory = [];
+let isSending = false;
+ 
+function appendMsg(role, html) {
+  const msgs = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role === 'user' ? 'user' : 'ai');
+  const av = document.createElement('div');
+  av.className = 'msg-av ' + (role === 'user' ? 'usr-av' : 'ai-av');
+  if (role === 'user') {
+    av.textContent = '👤';
+  } else {
+    av.innerHTML = '<img src="' + AGENT_LOGO + '" alt="AI" style="width:100%;height:100%;border-radius:50%;object-fit:contain;display:block" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"/><span style="display:none">🤖</span>';
+  }
+  const bub = document.createElement('div');
+  bub.className = 'msg-bubble';
+  if (role === 'user') {
+    bub.textContent = html;
+  } else {
+    bub.innerHTML = html;
+  }
+  div.appendChild(av);
+  div.appendChild(bub);
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+  return bub;
+}
+ 
+function showTyping() {
+  const msgs = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg ai'; div.id = 'typingIndicator';
+  const av = document.createElement('div');
+  av.className = 'msg-av ai-av'; av.innerHTML = '<img src="' + AGENT_LOGO + '" alt="AI" style="width:100%;height:100%;border-radius:50%;object-fit:contain;display:block" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"/><span style="display:none">🤖</span>';
+  const bub = document.createElement('div');
+  bub.className = 'msg-bubble typing';
+  bub.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+  div.appendChild(av); div.appendChild(bub);
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+ 
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+ 
+function formatResponse(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<span class="mono">$1</span>')
+    .replace(/https?:\/\/[^\s<]+/g, (url) => {
+      const trailing = url.match(/[),.;:!?]+$/);
+      const suffix = trailing ? trailing[0] : '';
+      const cleanUrl = suffix ? url.slice(0, -suffix.length) : url;
+      return `<a href="${cleanUrl}" target="_blank" rel="noopener">${cleanUrl}</a>${suffix}`;
+    })
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// ── ANIMATED TYPING ──────────────────────────────────────────────────────────
+function animateBubble(el, html, speed = 22) {
+  const tokens = html.match(/<[^>]+>|[^\s<]+|\s+/g) || [];
+  let i = 0;
+  el.innerHTML = '';
+  const msgs = document.getElementById('chatMsgs');
+  function tick() {
+    if (i < tokens.length) {
+      el.innerHTML += tokens[i++];
+      msgs.scrollTop = msgs.scrollHeight;
+      setTimeout(tick, speed);
+    } else {
+      el.innerHTML = html;
+    }
+  }
+  tick();
+}
+ 
+async function sendMsg() {
+  if (isSending) return;
+  const inp = document.getElementById('chatIn');
+  const btn = document.getElementById('chatBtn');
+  const text = inp.value.trim();
+  if (!text) return;
+ 
+  isSending = true;
+  btn.disabled = true;
+  inp.value = '';
+ 
+  // hide suggestions after first message
+  document.getElementById('chatSugs').style.display = 'none';
+ 
+  appendMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+  showTyping();
+ 
+  try {
+    const res = await fetch(CHAT_API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        messages: chatHistory
+      })
+    });
+ 
+    if (!res.ok) {
+      const err = await res.text();
+      throw new Error('API error: ' + res.status + ' ' + err);
+    }
+ 
+    const data = await res.json();
+    const reply = data.reply;
+    chatHistory.push({ role: 'assistant', content: reply });
+    removeTyping();
+    const bub = appendMsg('ai', '');
+    animateBubble(bub, formatResponse(reply));
+
+    // auto-show contact form if user wants to contact
+    const contactWords = ['contact','reach out','send message','hire','recruit','opportunity','connect with','get in touch','email deepak','message deepak','talk to deepak','want to reach'];
+    if (contactWords.some(w => text.toLowerCase().includes(w))) {
+      setTimeout(sendContactForm, 600);
+    }
+  } catch (e) {
+    removeTyping();
+    appendMsg('ai', 'Sorry, I had trouble connecting. Please try again in a moment, or reach out to Deepak directly at <strong>khimavathdeepak@gmail.com</strong>');
+    console.error(e);
+  }
+ 
+  isSending = false;
+  btn.disabled = false;
+  inp.focus();
+}
+ 
+function sendSug(el) {
+  document.getElementById('chatIn').value = el.textContent;
+  sendMsg();
+}
+
+// ── IN-CHAT CONTACT FORM ─────────────────────────────────────────────────────
+function sendContactForm() {
+  if (document.querySelector('.contact-inchat')) return; // already showing
+  const sugArea = document.getElementById('chatSugs');
+  sugArea.style.display = 'none';
+  document.getElementById('chatIn').value = '';
+  appendMsg('user', '📬 I want to send a message to Deepak');
+  const msgs = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg ai';
+  div.innerHTML = `<div class="msg-av ai-av" style="overflow:hidden"><img src="${AGENT_LOGO}" alt="AI" style="width:100%;height:100%;border-radius:50%;object-fit:contain;display:block" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><span style="display:none">🤖</span></div><div class="msg-bubble">Great. Fill this out and it will go directly to Deepak's inbox.
+  <div class="contact-inchat">
+    <div class="contact-inchat-title">📬 Send a Message</div>
+    <div class="fg"><label>Your Name</label><input class="ci-name" placeholder="e.g. please enter ur name here " /></div>
+    <div class="fg"><label>Your Email</label><input class="ci-email" type="email" placeholder="you@company.com" /></div>
+    <div class="fg"><label>Message</label><textarea class="ci-msg" placeholder="Tell Deepak about the opportunity..."></textarea></div>
+    <button class="contact-inchat-btn" onclick="submitContactForm(this)">Send Message →</button>
+    <div class="ci-status" style="font-size:.72rem;color:var(--muted);margin-top:8px;font-family:var(--font-m);display:none"></div>
+  </div></div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function submitContactForm(btn) {
+  const wrapper = btn.parentElement;
+  const name = wrapper.querySelector('.ci-name').value.trim();
+  const email = wrapper.querySelector('.ci-email').value.trim();
+  const msg = wrapper.querySelector('.ci-msg').value.trim();
+  const status = wrapper.querySelector('.ci-status');
+  if (!name || !email || !msg) {
+    status.style.display = 'block';
+    status.style.color = 'var(--gold)';
+    status.textContent = '⚠️ Please fill in all fields';
+    return;
+  }
+  if (!email.includes('@')) {
+    status.style.display = 'block';
+    status.style.color = 'var(--gold)';
+    status.textContent = '⚠️ Please enter a valid email';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  status.style.display = 'none';
+  try {
+    const res = await fetch('https://formspree.io/f/xgodgbao', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, email, message: msg })
+    });
+    if (res.ok) {
+      btn.textContent = '✓ Sent!';
+      btn.style.background = 'linear-gradient(135deg,#10B981,#059669)';
+      status.style.display = 'block';
+      status.style.color = 'var(--green)';
+      status.textContent = '✓ Message delivered to Deepak. He\'ll get back to you soon!';
+    } else {
+      throw new Error('send failed');
+    }
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = 'Send Message →';
+    btn.style.background = '';
+    status.style.display = 'block';
+    status.style.color = '#EF4444';
+    status.textContent = '✗ Failed to send. Please email directly: khimavathdeepak@gmail.com';
+  }
+}
+ 
+// ── CURSOR ────────────────────────────────────────────────────────────────────
+const C = document.getElementById('C');
+const CR = document.getElementById('CR');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e => {
+  mx=e.clientX; my=e.clientY;
+  C.style.transform = `translate(${mx-3}px,${my-3}px)`;
+});
+(function animCR(){
+  rx+=(mx-rx)*.1; ry+=(my-ry)*.1;
+  CR.style.transform = `translate(${rx-17}px,${ry-17}px)`;
+  requestAnimationFrame(animCR);
+})();
+document.querySelectorAll('a,button,.sug,.stag,.stk,.pill,.sk-it,.about-card,.proj-card,.contact-item,.chat-fab,.chat-modal-close,.chat-modal-send,.contact-inchat-btn,.proj-media-dot').forEach(el=>{
+  el.addEventListener('mouseenter',()=>CR.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>CR.classList.remove('hov'));
+});
+ 
+// ── NAV SCROLL ────────────────────────────────────────────────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+function toggleMenu() {
+  const open = nav.classList.toggle('menu-open');
+  const btn = nav.querySelector('.nav-toggle');
+  if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    nav.classList.remove('menu-open');
+    const btn = nav.querySelector('.nav-toggle');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+});
+ 
+// ── REVEAL ────────────────────────────────────────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+}, {threshold: 0.1});
+document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+ 
+// ── FLOATING CHAT ─────────────────────────────────────────────────────────────
+let chatOpened = false;
+function openChat() {
+  document.getElementById('chatOverlay').classList.add('open');
+  document.getElementById('chatModal').classList.add('open');
+  document.getElementById('chatFab').style.display = 'none';
+  document.getElementById('chatBadge').style.display = 'none';
+  const tip = document.getElementById('chatFabTip');
+  if (tip) { tip.style.opacity = '0'; tip.style.pointerEvents = 'none'; }
+  chatOpened = true;
+  document.getElementById('chatIn').focus();
+}
+function closeChat() {
+  document.getElementById('chatOverlay').classList.remove('open');
+  document.getElementById('chatModal').classList.remove('open');
+  document.getElementById('chatFab').style.display = 'flex';
+  const tip = document.getElementById('chatFabTip');
+  if (tip) { tip.style.opacity = ''; tip.style.pointerEvents = ''; }
+}
+function toggleChat() {
+  const m = document.getElementById('chatModal');
+  m.classList.contains('open') ? closeChat() : openChat();
+}
+
+// Chat stays as an explicit action so it does not cover the portfolio content.
+setTimeout(() => {
+  if (chatOpened) return;
+  const fab = document.getElementById('chatFab');
+  const tip = document.getElementById('chatFabTip');
+  if (fab) fab.classList.add('pulse');
+  if (tip) tip.classList.add('show');
+  setTimeout(() => {
+    if (!chatOpened && tip) tip.classList.remove('show');
+  }, 6500);
+}, 2200);
+
+// ── FORMSPREE ─────────────────────────────────────────────────────────────────
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('cfBtn');
+  const orig = btn.textContent;
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(this.action, {
+      method: 'POST',
+      body: new FormData(this),
+      headers: { 'Accept': 'application/json' }
+    });
+    if (res.ok) {
+      btn.textContent = '✓ Message Sent!';
+      btn.style.background = 'linear-gradient(135deg,#10B981,#059669)';
+      this.reset();
+      setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.disabled = false; }, 3000);
+    } else {
+      throw new Error('Formspree error');
+    }
+  } catch(e) {
+    btn.textContent = '✗ Failed — try emailing directly';
+    btn.style.background = 'linear-gradient(135deg,#EF4444,#DC2626)';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; btn.disabled = false; }, 3000);
+  }
+});
+
+// ── PROJECT IMAGE GALLERY ────────────────────────────────────────────────────
+function showProjMedia(dot, idx) {
+  const frame = dot.closest('.proj-media-frame');
+  frame.querySelectorAll('.proj-media-img').forEach((img, i) => {
+    img.classList.toggle('active', i === idx);
+  });
+  frame.querySelectorAll('.proj-media-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+}
+function goProjMedia(frame, idx) {
+  const total = frame.querySelectorAll('.proj-media-img').length;
+  if (idx < 0) idx = total - 1;
+  if (idx >= total) idx = 0;
+  frame.querySelectorAll('.proj-media-img').forEach((img, i) => {
+    img.classList.toggle('active', i === idx);
+  });
+  frame.querySelectorAll('.proj-media-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === idx);
+  });
+}
+function prevProjMedia(btn) {
+  const frame = btn.closest('.proj-media-frame');
+  const cur = frame.querySelector('.proj-media-img.active');
+  const imgs = frame.querySelectorAll('.proj-media-img');
+  let idx = 0;
+  imgs.forEach((img, i) => { if (img === cur) idx = i; });
+  goProjMedia(frame, idx - 1);
+}
+function nextProjMedia(btn) {
+  const frame = btn.closest('.proj-media-frame');
+  const cur = frame.querySelector('.proj-media-img.active');
+  const imgs = frame.querySelectorAll('.proj-media-img');
+  let idx = 0;
+  imgs.forEach((img, i) => { if (img === cur) idx = i; });
+  goProjMedia(frame, idx + 1);
+}
+
+// ── LIGHTBOX ────────────────────────────────────────────────────────────────
+const lightbox = document.getElementById('mediaLightbox');
+const lightboxImg = lightbox.querySelector('.media-lightbox-img');
+const lightboxCounter = lightbox.querySelector('.media-lightbox-counter');
+let lbFrames = [];
+let lbIdx = 0;
+
+function openLightbox(imgEl) {
+  const frame = imgEl.closest('.proj-media-frame');
+  const allImgs = frame.querySelectorAll('.proj-media-img');
+  lbFrames = [];
+  allImgs.forEach(im => { if (im.getAttribute('src')) lbFrames.push(im.getAttribute('src')); });
+  allImgs.forEach((im, i) => { if (im === imgEl) lbIdx = i; });
+  showLightboxImage();
+  lightbox.classList.add('open');
+  lightbox.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  lightbox.classList.remove('open');
+  lightbox.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  lightboxImg.removeAttribute('src');
+}
+function showLightboxImage() {
+  lightboxImg.src = lbFrames[lbIdx];
+  lightboxCounter.textContent = (lbIdx + 1) + ' / ' + lbFrames.length;
+}
+function prevLightbox() {
+  lbIdx = (lbIdx - 1 + lbFrames.length) % lbFrames.length;
+  showLightboxImage();
+}
+function nextLightbox() {
+  lbIdx = (lbIdx + 1) % lbFrames.length;
+  showLightboxImage();
+}
+lightbox.addEventListener('click', e => {
+  if (e.target === lightbox) closeLightbox();
+});
+document.addEventListener('keydown', e => {
+  if (!lightbox.classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') prevLightbox();
+  if (e.key === 'ArrowRight') nextLightbox();
+});
+
+// attach click on images to open lightbox
+document.querySelectorAll('.proj-media-img').forEach(img => {
+  img.addEventListener('click', function() { openLightbox(this); });
+});
+
+// auto-show dots when images have src
+document.querySelectorAll('.proj-media-frame').forEach(frame => {
+  const imgs = frame.querySelectorAll('.proj-media-img');
+  const dots = frame.querySelector('.proj-media-dots');
+  const placeholder = frame.querySelector('.proj-media-placeholder');
+  let hasImages = false;
+  imgs.forEach((img, i) => {
+    if (img.getAttribute('src') && img.getAttribute('src').trim() !== '') {
+      hasImages = true;
+      img.style.display = 'block';
+      if (i === 0) img.classList.add('active');
+    }
+  });
+  if (hasImages) {
+    if (placeholder) placeholder.style.display = 'none';
+    if (dots) dots.style.display = 'flex';
+    // if first img has no active, set it
+    if (!frame.querySelector('.proj-media-img.active')) {
+      const first = frame.querySelector('.proj-media-img');
+      if (first) first.classList.add('active');
+    }
+  }
+});
+
+document.querySelectorAll('.proj-media-img').forEach(img => {
+  function classify() {
+    img.classList.remove('portrait', 'landscape');
+    if (img.naturalHeight > img.naturalWidth) {
+      img.classList.add('portrait');
+      const frame = img.closest('.proj-media-frame');
+      if (frame) frame.classList.add('has-portrait');
+    } else {
+      img.classList.add('landscape');
+    }
+  }
+  if (img.complete && img.naturalWidth) {
+    classify();
+  } else {
+    img.addEventListener('load', classify, { once: true });
+  }
+});
+</script>
+
+</body>
+</html>

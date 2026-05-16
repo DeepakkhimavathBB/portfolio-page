@@ -1,0 +1,13 @@
+{
+  "name": "deepak-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "vercel-dev": "vercel dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
