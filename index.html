@@ -466,7 +466,7 @@ section{padding:110px 64px;position:relative;}
 /* Timeline Product Showcase */
 .tl-product-showcase{margin-top:20px;}
 .tl-product-gallery{position:relative;border-radius:10px;overflow:hidden;background:var(--bg3);max-width:480px;}
-.tl-product-img{display:none;width:100%;height:auto;border-radius:10px;}
+.tl-product-img{display:none;width:100%;height:auto;border-radius:10px;cursor:zoom-in;}
 .tl-product-img.active{display:block;}
 .tl-product-prev,.tl-product-next{
   position:absolute;top:50%;transform:translateY(-50%);
@@ -2893,8 +2893,9 @@ let lbFrames = [];
 let lbIdx = 0;
 
 function openLightbox(imgEl) {
-  const frame = imgEl.closest('.proj-media-frame');
-  const allImgs = frame.querySelectorAll('.proj-media-img');
+  const frame = imgEl.closest('.proj-media-frame, .tl-product-gallery');
+  if (!frame) return;
+  const allImgs = frame.querySelectorAll('.proj-media-img, .tl-product-img');
   lbFrames = [];
   allImgs.forEach(im => { if (im.getAttribute('src')) lbFrames.push(im.getAttribute('src')); });
   allImgs.forEach((im, i) => { if (im === imgEl) lbIdx = i; });
@@ -2932,7 +2933,7 @@ document.addEventListener('keydown', e => {
 });
 
 // attach click on images to open lightbox
-document.querySelectorAll('.proj-media-img').forEach(img => {
+document.querySelectorAll('.proj-media-img, .tl-product-img').forEach(img => {
   img.addEventListener('click', function() { openLightbox(this); });
 });
 
