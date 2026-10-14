@@ -23,59 +23,30 @@ const types = {
 const server = http.createServer(async (req, res) => {
   if (req.url === '/api/chat' && req.method === 'POST') {
     req.body = await readJson(req);
-    res.status = (code) => {
-      res.statusCode = code;
-      return res;
-    };
-    res.json = (body) => {
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(body));
-    };
+    res.status = (code) => { res.statusCode = code; return res; };
+    res.json = (body) => { res.setHeader('Content-Type', 'application/json'); res.end(JSON.stringify(body)); };
     return chatHandler(req, res);
   }
-
-  if (req.url && req.url.startsWith('/api/')) {
-    res.statusCode = 404;
-    return res.end('Not found');
-  }
-
+  if (req.url && req.url.startsWith('/api/')) { res.statusCode = 404; return res.end('Not found'); }
   const urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
   const safePath = path.normalize(urlPath === '/' ? '/index.html' : urlPath).replace(/^(\.\.[/\\])+/, '');
   const filePath = path.join(root, safePath);
-
-  if (!filePath.startsWith(root)) {
-    res.statusCode = 403;
-    return res.end('Forbidden');
-  }
-
+  if (!filePath.startsWith(root)) { res.statusCode = 403; return res.end('Forbidden'); }
   fs.readFile(filePath, (err, data) => {
-    if (err) {
-      res.statusCode = 404;
-      return res.end('Not found');
-    }
+    if (err) { res.statusCode = 404; return res.end('Not found'); }
     res.setHeader('Content-Type', types[path.extname(filePath).toLowerCase()] || 'application/octet-stream');
     res.end(data);
   });
 });
 
 listen(port);
-
 function listen(targetPort) {
   server.once('error', (error) => {
-    if (error.code === 'EADDRINUSE') {
-      const nextPort = targetPort + 1;
-      console.log(`Port ${targetPort} is busy. Trying ${nextPort}...`);
-      listen(nextPort);
-      return;
-    }
+    if (error.code === 'EADDRINUSE') { const nextPort = targetPort + 1; console.log(`Port ${targetPort} is busy. Trying ${nextPort}...`); listen(nextPort); return; }
     throw error;
   });
-
-  server.listen(targetPort, () => {
-    console.log(`Portfolio running at http://localhost:${targetPort}`);
-  });
+  server.listen(targetPort, () => console.log(`Portfolio running at http://localhost:${targetPort}`));
 }
-
 function loadEnv(filePath) {
   if (!fs.existsSync(filePath)) return;
   const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
@@ -89,21 +60,11 @@ function loadEnv(filePath) {
     if (!process.env[key]) process.env[key] = value;
   }
 }
-
 function readJson(req) {
   return new Promise((resolve) => {
     let raw = '';
-    req.on('data', (chunk) => {
-      raw += chunk;
-      if (raw.length > 100000) req.destroy();
-    });
-    req.on('end', () => {
-      try {
-        resolve(raw ? JSON.parse(raw) : {});
-      } catch {
-        resolve({});
-      }
-    });
+    req.on('data', (chunk) => { raw += chunk; if (raw.length > 100000) req.destroy(); });
+    req.on('end', () => { try { resolve(raw ? JSON.parse(raw) : {}); } catch { resolve({}); } });
     req.on('error', () => resolve({}));
   });
 }
